@@ -17,7 +17,7 @@
       "target": "api::brand.brand",
       "inversedBy": "products"
     },
-    "product": {
+    "category": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::category.category",
