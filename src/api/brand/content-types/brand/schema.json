@@ -24,11 +24,11 @@
     "description": {
       "type": "text"
     },
-    "product": {
+    "products": {
       "type": "relation",
-      "relation": "oneToOne",
+      "relation": "oneToMany",
       "target": "api::product.product",
-      "inversedBy": "brand"
+      "mappedBy": "brand"
     },
     "category": {
       "type": "relation",
