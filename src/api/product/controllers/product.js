@@ -2,39 +2,49 @@
 
 const { createCoreController } = require('@strapi/strapi').factories;
 
-module.exports = createCoreController('api::product.product', ({ strapi }) => ({
+// الحقول اللي عايزين نمسحها
+const KEYS = ['createdAt', 'updatedAt', 'publishedAt'];
 
-  async find(ctx) {
-    strapi.log.info('✅ custom product.find running (safe cleaner)');
-    const response = await super.find(ctx);
+// دالة تنظيف آمنة تمر بعمق لكن من غير ما تمسح قيم
+function cleanTimestamps(obj) {
+  if (!obj || typeof obj !== 'object') return;
 
-    // نحذف الحقول فقط من المستوى الأساسي
-    if (response && Array.isArray(response.data)) {
-      response.data = response.data.map(item => {
-        if (item?.attributes) {
-          // نحذف الثلاث مفاتيح بس
-          delete item.attributes.createdAt;
-          delete item.attributes.updatedAt;
-          delete item.attributes.publishedAt;
-        }
-        return item;
-      });
+  if (Array.isArray(obj)) {
+    obj.forEach(cleanTimestamps);
+    return;
+  }
+
+  // لو في attributes نحذف منها الثلاث مفاتيح
+  if (obj.attributes && typeof obj.attributes === 'object') {
+    KEYS.forEach(k => delete obj.attributes[k]);
+    Object.values(obj.attributes).forEach(cleanTimestamps);
+  }
+
+  // لو في data (علاقات populate)
+  if (obj.data) cleanTimestamps(obj.data);
+
+ 
+  Object.keys(obj).forEach(key => {
+    if (KEYS.includes(key)) {
+      delete obj[key];
+    } else {
+      cleanTimestamps(obj[key]);
     }
+  });
+}
 
+module.exports = createCoreController('api::product.product', ({ strapi }) => ({
+  async find(ctx) {
+    strapi.log.info('✅ Deep Cleaner: product.find running');
+    const response = await super.find(ctx);
+    cleanTimestamps(response);
     return response;
   },
 
   async findOne(ctx) {
-    strapi.log.info('✅ custom product.findOne running (safe cleaner)');
+    strapi.log.info('✅ Deep Cleaner: product.findOne running');
     const response = await super.findOne(ctx);
-
-    if (response?.data?.attributes) {
-      delete response.data.attributes.createdAt;
-      delete response.data.attributes.updatedAt;
-      delete response.data.attributes.publishedAt;
-    }
-
+    cleanTimestamps(response);
     return response;
   },
-
 }));
