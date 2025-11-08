@@ -647,7 +647,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
-    images: Schema.Attribute.String &
+    image: Schema.Attribute.Component<'shared.product-images', true> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;

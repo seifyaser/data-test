@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_shared_product_images",
+  "info": {
+    "displayName": "ProductImages"
+  },
+  "options": {},
+  "attributes": {
+    "url": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

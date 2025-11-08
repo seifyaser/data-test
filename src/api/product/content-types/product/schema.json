@@ -55,13 +55,15 @@
         }
       }
     },
-    "images": {
-      "type": "string",
+    "image": {
+      "type": "component",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
-      }
+      },
+      "component": "shared.product-images",
+      "repeatable": true
     }
   }
 }
