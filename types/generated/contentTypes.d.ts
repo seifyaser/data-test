@@ -588,6 +588,41 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiFavouriteFavourite extends Struct.CollectionTypeSchema {
+  collectionName: 'favourites';
+  info: {
+    displayName: 'favourites';
+    pluralName: 'favourites';
+    singularName: 'favourite';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    favourite_product: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::product.product'
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::favourite.favourite'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    users_permissions_user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
 export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
   collectionName: 'globals';
   info: {
@@ -670,6 +705,10 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
+    products: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::favourite.favourite'
+    >;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'name'>;
     updatedAt: Schema.Attribute.DateTime;
@@ -1133,7 +1172,6 @@ export interface PluginUsersPermissionsUser
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -1147,6 +1185,10 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
+    favourites: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::favourite.favourite'
+    >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -1192,6 +1234,7 @@ declare module '@strapi/strapi' {
       'api::about.about': ApiAboutAbout;
       'api::brand.brand': ApiBrandBrand;
       'api::category.category': ApiCategoryCategory;
+      'api::favourite.favourite': ApiFavouriteFavourite;
       'api::global.global': ApiGlobalGlobal;
       'api::product.product': ApiProductProduct;
       'plugin::content-releases.release': PluginContentReleasesRelease;
