@@ -1,14 +1,5 @@
 'use strict';
 
-/*
-نربط الـ favorite بالمستخدم من الـ JWT فقط
-
-نمنع تكرار إلا لو المستخدم أضاف نفس المنتج قبل كده
-
-نرجّع بيانات المنتج مع الـ favorite باستخدام populate
-
-نسهّل على الـ Frontend التعامل بدون ما يرسل userId
-*/
 const { createCoreController } = require('@strapi/strapi').factories;
 
 module.exports = createCoreController('api::favourite.favourite', ({ strapi }) => ({
@@ -18,7 +9,7 @@ module.exports = createCoreController('api::favourite.favourite', ({ strapi }) =
     if (!user) return ctx.unauthorized();
 
     const data = await strapi.entityService.findMany('api::favourite.favourite', {
-      filters: { users_permissions_user: user.id },
+      filters: { user: user.id },
       populate: { favourite_product: true },
     });
 
@@ -32,9 +23,10 @@ module.exports = createCoreController('api::favourite.favourite', ({ strapi }) =
     const productId = ctx.request.body.data?.favourite_product;
     if (!productId) return ctx.badRequest("Product ID is required");
 
+    // check if already exists
     const exists = await strapi.entityService.findMany('api::favourite.favourite', {
       filters: {
-        users_permissions_user: user.id,
+        user: user.id,
         favourite_product: productId,
       },
     });
@@ -45,7 +37,7 @@ module.exports = createCoreController('api::favourite.favourite', ({ strapi }) =
 
     const entry = await strapi.entityService.create('api::favourite.favourite', {
       data: {
-        users_permissions_user: user.id,
+        user: user.id,               // ← ← ← صح هنا
         favourite_product: productId,
       },
     });
@@ -60,11 +52,11 @@ module.exports = createCoreController('api::favourite.favourite', ({ strapi }) =
     const id = ctx.params.id;
 
     const fav = await strapi.entityService.findOne('api::favourite.favourite', id, {
-      populate: { users_permissions_user: true }
+      populate: { user: true }
     });
 
     if (!fav) return ctx.notFound();
-    if (fav.users_permissions_user.id !== user.id) return ctx.unauthorized();
+    if (fav.user.id !== user.id) return ctx.unauthorized();
 
     await strapi.entityService.delete('api::favourite.favourite', id);
 
