@@ -66,11 +66,11 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "favourite": {
+    "user": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::favourite.favourite",
-      "mappedBy": "user"
+      "mappedBy": "users_permissions_user"
     }
   }
 }
