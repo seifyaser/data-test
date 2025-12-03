@@ -1185,7 +1185,7 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
-    favourites: Schema.Attribute.Relation<
+    favourite: Schema.Attribute.Relation<
       'oneToMany',
       'api::favourite.favourite'
     >;

@@ -11,16 +11,16 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "favourite_product": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::product.product",
-      "inversedBy": "favourites"
-    },
     "user": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
+      "inversedBy": "favourite"
+    },
+    "favourite_product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
       "inversedBy": "favourites"
     }
   }
