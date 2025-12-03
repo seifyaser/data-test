@@ -11,12 +11,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "favourite_product": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::product.product",
-      "inversedBy": "products"
-    },
     "users_permissions_user": {
       "type": "relation",
       "relation": "manyToOne",
