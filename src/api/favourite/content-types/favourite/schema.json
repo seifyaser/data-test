@@ -17,11 +17,11 @@
       "target": "plugin::users-permissions.user",
       "inversedBy": "favourites"
     },
-    "favourite_products": {
+    "favourite_product": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "oneToOne",
       "target": "api::product.product",
-      "mappedBy": "favourite"
+      "inversedBy": "favourite"
     }
   }
 }

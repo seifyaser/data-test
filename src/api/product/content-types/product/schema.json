@@ -67,9 +67,9 @@
     },
     "favourite": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "oneToOne",
       "target": "api::favourite.favourite",
-      "inversedBy": "favourite_products"
+      "mappedBy": "favourite_product"
     }
   }
 }
