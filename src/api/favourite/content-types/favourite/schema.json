@@ -11,17 +11,17 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "users_permissions_user": {
+    "favourite_product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "inversedBy": "favourites"
+    },
+    "user": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
       "inversedBy": "favourites"
-    },
-    "favourite_product": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::product.product",
-      "inversedBy": "favourite"
     }
   }
 }

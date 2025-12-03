@@ -65,9 +65,9 @@
       "component": "shared.product-images",
       "repeatable": true
     },
-    "favourite": {
+    "favourites": {
       "type": "relation",
-      "relation": "oneToOne",
+      "relation": "oneToMany",
       "target": "api::favourite.favourite",
       "mappedBy": "favourite_product"
     }
