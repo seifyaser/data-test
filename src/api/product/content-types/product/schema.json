@@ -65,11 +65,11 @@
       "component": "shared.product-images",
       "repeatable": true
     },
-    "favourites": {
+    "favourite": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToOne",
       "target": "api::favourite.favourite",
-      "mappedBy": "favourite_product"
+      "inversedBy": "favourite_products"
     }
   }
 }
